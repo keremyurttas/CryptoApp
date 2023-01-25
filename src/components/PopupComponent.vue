@@ -14,16 +14,46 @@
       <input
         type="text"
         class="w-full rounded-lg p-4 mb-4 border border-black"
+        v-model="inputVal"
       />
-      <div class="space-y-4">
-        <owned-crypto :uCoin="true"></owned-crypto>
-        <owned-crypto></owned-crypto>
 
-        <owned-crypto></owned-crypto>
+      <div class="space-y-4 overflow-auto h-[80%]">
+        <owned-crypto
+          :key="i"
+          v-for="(coin, i) in filterBySearch"
+          :coinDetails="{
+            name: coin.symbol,
+            price: coin.lastPrice,
+            avgPrice: coin.weightedAvgPrice,
+            id: coin.firstId,
+          }"
+        ></owned-crypto>
+
+        <!-- <owned-crypto></owned-crypto>
+
+        <owned-crypto></owned-crypto> -->
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import OwnedCrypto from "./OwnedCrypto.vue";
+import ownedCrypto from "./OwnedCrypto.vue";
+import store from "@/store";
+import { computed, ref } from "vue";
+
+let inputVal = ref("");
+
+const getAllCoins = computed(() => {
+  return store.state.allCoins;
+});
+const filterBySearch = computed(() => {
+  let searchResult = [];
+  getAllCoins.value.forEach((coin) => {
+    if (coin.symbol.includes(inputVal.value.toUpperCase())) {
+      searchResult.push(coin);
+    }
+  });
+
+  return searchResult;
+});
 </script>

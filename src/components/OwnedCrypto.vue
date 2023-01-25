@@ -27,6 +27,7 @@
         <button
           :class="{ 'h-8': !inInventory }"
           class="custom-button bg-red-500"
+          @click="removeCoinFnc"
         >
           Remove
         </button>
@@ -40,6 +41,8 @@
           Add
         </button>
       </div>
+      {{ coinDetails.count }}
+      {{ count }}
     </div>
   </div>
 </template>
@@ -55,6 +58,7 @@ let props = defineProps({
         price: null,
         avgPrice: null,
         id: -1,
+        count: 1,
       };
     },
   },
@@ -65,12 +69,17 @@ let props = defineProps({
   inInventory: { type: Boolean, default: false },
 });
 
-const count = ref(1);
+const count = ref(props.coinDetails.count);
 
 function addToInventoryFnc() {
   store.commit("addToInventory", {
     id: props.coinDetails.id,
     count: count.value,
   });
+}
+
+function removeCoinFnc() {
+  console.log("sa");
+  store.commit("removeCoin", props.coinDetails.id);
 }
 </script>

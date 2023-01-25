@@ -26,6 +26,7 @@
             price: coin.lastPrice,
             avgPrice: coin.weightedAvgPrice,
             id: coin.firstId,
+            count: 1,
           }"
         ></owned-crypto>
 

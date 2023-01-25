@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-button {
+  @apply md:px-4 md:py-2 rounded-md flex items-center justify-center;
+}
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+  }
+}

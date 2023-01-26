@@ -26,8 +26,9 @@
             price: coin.lastPrice,
             avgPrice: coin.weightedAvgPrice,
             id: coin.firstId,
-            count: 1,
+            count: coin.ownedCount,
           }"
+          :uCoin="coin.uCoin"
         ></owned-crypto>
 
         <!-- <owned-crypto></owned-crypto>
@@ -44,12 +45,9 @@ import { computed, ref } from "vue";
 
 let inputVal = ref("");
 
-const getAllCoins = computed(() => {
-  return store.state.allCoins;
-});
 const filterBySearch = computed(() => {
   let searchResult = [];
-  getAllCoins.value.forEach((coin) => {
+  store.getters.getAllCoins.forEach((coin) => {
     if (coin.symbol.includes(inputVal.value.toUpperCase())) {
       searchResult.push(coin);
     }

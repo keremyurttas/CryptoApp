@@ -14,6 +14,7 @@
         type="number"
         name=""
         id=""
+        min="0"
         v-model="count"
       />
 
@@ -21,6 +22,7 @@
         <button
           :class="{ 'h-8': !inInventory }"
           class="custom-button bg-purple-300"
+          @click="updateCoinFnc"
         >
           Update
         </button>
@@ -41,17 +43,18 @@
           Add
         </button>
       </div>
-      {{ coinDetails.count }}
-      {{ count }}
     </div>
   </div>
 </template>
 <script setup>
-import { defineProps, ref } from "vue";
+import { defineProps, ref, watchEffect } from "vue";
 import store from "@/store";
 let props = defineProps({
   coinDetails: {
     type: Object,
+    id: {
+      required: true,
+    },
     default() {
       return {
         name: "",
@@ -69,7 +72,9 @@ let props = defineProps({
   inInventory: { type: Boolean, default: false },
 });
 
-const count = ref(props.coinDetails.count);
+let count = ref(0);
+
+watchEffect(() => (count.value = props.coinDetails.count));
 
 function addToInventoryFnc() {
   store.commit("addToInventory", {
@@ -79,7 +84,17 @@ function addToInventoryFnc() {
 }
 
 function removeCoinFnc() {
-  console.log("sa");
   store.commit("removeCoin", props.coinDetails.id);
+}
+
+function updateCoinFnc() {
+  if (count.value === 0) {
+    removeCoinFnc();
+  } else {
+    store.commit("updateCoin", {
+      id: props.coinDetails.id,
+      count: count.value,
+    });
+  }
 }
 </script>

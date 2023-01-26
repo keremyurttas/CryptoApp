@@ -15,8 +15,6 @@
     </div>
     <div class="md:flex justify-between pt-16 h-[85%] space-y-10 md:space-y-0">
       <div class="md:w-[50%] md:pr-16 space-y-3">
-        <!-- <owned-crypto :uCoin="true" :inInventory="true"></owned-crypto>
-        <owned-crypto :uCoin="false" :inInventory="true"></owned-crypto> -->
         <owned-crypto
           :key="i"
           :coinDetails="coin"
@@ -34,10 +32,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import ownedCrypto from "./components/OwnedCrypto.vue";
 import popupComponent from "./components/PopupComponent.vue";
 import store from "./store";
+
+let popupDisplay = ref(false);
+
 function popupClose(val) {
   popupDisplay.value = val;
 }
@@ -45,11 +46,11 @@ function fetchData() {
   store.dispatch("fetchData");
 }
 const getInventory = computed(() => {
-  console.log(store.getters.getInventory);
   return store.getters.getInventory;
 });
-
-let popupDisplay = ref(false);
+onMounted(() => {
+  fetchData();
+});
 </script>
 
 <style></style>

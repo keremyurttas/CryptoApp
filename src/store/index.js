@@ -24,17 +24,44 @@ export default createStore({
           }
         }
       });
+
       return detailedInventory;
+    },
+    getAllCoins(state) {
+      let coins = [];
+      if (state.inventory.length == 0) {
+        coins = state.allCoins;
+      } else
+        state.inventory.forEach((ownedCoin) => {
+          state.allCoins.forEach((coin) => {
+            if (ownedCoin.id == coin.firstId) {
+              coin.uCoin = true;
+              coin.ownedCount = ownedCoin.count;
+            }
+            coins.push(coin);
+          });
+        });
+      return coins;
     },
   },
   mutations: {
     addToInventory(state, payload) {
       state.inventory.push(payload);
-      console.log(state.inventory);
     },
     removeCoin(state, payload) {
-      let index = state.inventory.findIndex((coin) => coin.id == payload);
-      state.inventory.splice(index, 1);
+      let inventoryIndex = state.inventory.findIndex(
+        (coin) => coin.id == payload
+      );
+      state.inventory.splice(inventoryIndex, 1);
+      let allCoinsIndex = state.allCoins.findIndex(
+        (coin) => coin.firstId == payload
+      );
+      state.allCoins[allCoinsIndex].uCoin = false;
+      state.allCoins[allCoinsIndex].ownedCount = undefined;
+    },
+    updateCoin(state, payload) {
+      let index = state.inventory.findIndex((coin) => coin.id == payload.id);
+      state.inventory[index].count = payload.count;
     },
   },
   actions: {
@@ -43,8 +70,6 @@ export default createStore({
         r.data.forEach((coin) => {
           state.allCoins.push(coin);
         });
-        console.log(state.allCoins);
-        console.log(r.data.length);
       });
     },
   },

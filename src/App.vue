@@ -58,7 +58,7 @@ const getChartDetails = computed(() => {
     chartDetails.names.push(coin.name);
     chartDetails.data.push(coin.price * coin.count);
   });
-  console.log(chartDetails);
+
   return chartDetails;
 });
 setInterval(fetchData, 200000);

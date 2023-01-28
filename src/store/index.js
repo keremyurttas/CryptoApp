@@ -67,10 +67,20 @@ export default createStore({
   actions: {
     fetchData({ state }) {
       axios.get("https://api2.binance.com/api/v3/ticker/24hr").then((r) => {
-        console.log(r);
-        r.data.forEach((coin) => {
-          if (coin.firstId != -1) state.allCoins.push(coin);
+        r.data.forEach((d, index) => {
+          if (d.firstId == -1) {
+            r.data.splice(index, 1);
+          }
         });
+        if (state.allCoins.length === r.data.length) {
+          console.log(r.data[0]);
+          for (let i = 0; i < state.allCoins.length; i++) {
+            state.allCoins[i].lastPrice = r.data[i].lastPrice;
+          }
+        } else
+          r.data.forEach((coin) => {
+            state.allCoins.push(coin);
+          });
       });
     },
   },

@@ -52,9 +52,6 @@ import store from "@/store";
 let props = defineProps({
   coinDetails: {
     type: Object,
-    id: {
-      required: true,
-    },
     default() {
       return {
         name: "",

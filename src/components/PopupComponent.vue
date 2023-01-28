@@ -18,7 +18,7 @@
       />
 
       <div class="space-y-4 overflow-auto h-[80%]">
-        <owned-crypto
+        <coin-component
           :key="i"
           v-for="(coin, i) in filterBySearch"
           :coinDetails="{
@@ -29,7 +29,7 @@
             count: coin.ownedCount,
           }"
           :uCoin="coin.uCoin"
-        ></owned-crypto>
+        ></coin-component>
 
         <!-- <owned-crypto></owned-crypto>
 
@@ -39,7 +39,7 @@
   </div>
 </template>
 <script setup>
-import ownedCrypto from "./OwnedCrypto.vue";
+import coinComponent from "./CoinComponent.vue";
 import store from "@/store";
 import { computed, ref } from "vue";
 
@@ -53,6 +53,6 @@ const filterBySearch = computed(() => {
     }
   });
 
-  return searchResult;
+  return searchResult.slice(0, 50);
 });
 </script>

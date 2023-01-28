@@ -15,17 +15,17 @@
     </div>
     <div class="md:flex justify-between pt-16 h-[85%] space-y-10 md:space-y-0">
       <div class="md:w-[50%] md:pr-16 space-y-3">
-        <owned-crypto
+        <coin-component
           :key="i"
           :coinDetails="coin"
           :uCoin="true"
           :inInventory="true"
           v-for="(coin, i) in getInventory"
-        ></owned-crypto>
+        ></coin-component>
       </div>
       <div class="md:block hidden w-0.5 h-full bg-gray-500"></div>
       <div class="flex items-center justify-center md:w-[50%] bg-gray-200">
-        <div class="bg-gray-500 rounded-full w-96 h-96"></div>
+        <chart-component :chartDetails="getChartDetails"></chart-component>
       </div>
     </div>
   </div>
@@ -33,8 +33,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import ownedCrypto from "./components/OwnedCrypto.vue";
+import coinComponent from "./components/CoinComponent.vue";
 import popupComponent from "./components/PopupComponent.vue";
+import chartComponent from "./components/ChartComponent.vue";
 import store from "./store";
 
 let popupDisplay = ref(false);
@@ -48,6 +49,19 @@ function fetchData() {
 const getInventory = computed(() => {
   return store.getters.getInventory;
 });
+const getChartDetails = computed(() => {
+  let chartDetails = {
+    names: [],
+    data: [],
+  };
+  getInventory.value.forEach((coin) => {
+    chartDetails.names.push(coin.name);
+    chartDetails.data.push(coin.price * coin.count);
+  });
+  console.log(chartDetails);
+  return chartDetails;
+});
+setInterval(fetchData, 200000);
 onMounted(() => {
   fetchData();
 });

@@ -14,7 +14,16 @@
       </button>
     </div>
     <div class="md:flex justify-between pt-16 h-[85%] space-y-10 md:space-y-0">
-      <div class="md:w-[50%] md:pr-16 space-y-3">
+      <div
+        v-if="getInventory.length == 0"
+        class="md:w-[50%] md:pr-16 space-y-3 overflow-auto"
+      >
+        <owned-coin-skeleton></owned-coin-skeleton>
+        <owned-coin-skeleton></owned-coin-skeleton>
+        <owned-coin-skeleton></owned-coin-skeleton>
+        <owned-coin-skeleton></owned-coin-skeleton>
+      </div>
+      <div v-else class="md:w-[50%] md:pr-16 space-y-3 overflow-auto">
         <owned-coin
           :coinDetails="coin"
           v-for="(coin, i) in getInventory"
@@ -23,7 +32,19 @@
         ></owned-coin>
       </div>
       <div class="md:block hidden w-0.5 h-full bg-gray-500"></div>
-      <div class="flex items-center justify-center md:w-[50%] bg-gray-200">
+      <div
+        class="flex items-center justify-center md:w-[50%] bg-gray-200 relative"
+        v-if="getChartDetails.names.length == 0"
+      >
+        <chart-skeleton-component
+          class=""
+          v-if="getChartDetails.names.length == 0"
+        ></chart-skeleton-component>
+      </div>
+      <div
+        class="flex items-center justify-center md:w-[50%] bg-gray-200 relative"
+        v-else
+      >
         <chart-component :chartDetails="getChartDetails"></chart-component>
       </div>
     </div>
@@ -35,6 +56,8 @@ import { ref, computed, onMounted } from "vue";
 import popupComponent from "./components/PopupComponent.vue";
 import chartComponent from "./components/ChartComponent.vue";
 import ownedCoin from "./components/OwnedCoin.vue";
+import ownedCoinSkeleton from "./components/OwnedCoinSkeleton.vue";
+import chartSkeletonComponent from "./components/ChartSkeletonComponent.vue";
 import store from "./store";
 
 let popupDisplay = ref(false);

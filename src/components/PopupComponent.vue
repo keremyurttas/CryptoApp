@@ -52,7 +52,7 @@ const filterBySearch = computed(() => {
       searchResult.push(coin);
     }
   });
-
+  console.log(searchResult);
   return searchResult.slice(0, 50);
 });
 </script>

@@ -15,13 +15,12 @@
     </div>
     <div class="md:flex justify-between pt-16 h-[85%] space-y-10 md:space-y-0">
       <div class="md:w-[50%] md:pr-16 space-y-3">
-        <coin-component
-          :key="i"
+        <owned-coin
           :coinDetails="coin"
-          :uCoin="true"
-          :inInventory="true"
           v-for="(coin, i) in getInventory"
-        ></coin-component>
+          :key="i"
+          :inInventory="true"
+        ></owned-coin>
       </div>
       <div class="md:block hidden w-0.5 h-full bg-gray-500"></div>
       <div class="flex items-center justify-center md:w-[50%] bg-gray-200">
@@ -33,9 +32,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import coinComponent from "./components/CoinComponent.vue";
 import popupComponent from "./components/PopupComponent.vue";
 import chartComponent from "./components/ChartComponent.vue";
+import ownedCoin from "./components/OwnedCoin.vue";
 import store from "./store";
 
 let popupDisplay = ref(false);

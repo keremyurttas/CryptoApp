@@ -46,7 +46,7 @@ let props = defineProps({
   },
 });
 
-let count = ref(0);
+let count = ref();
 
 watchEffect(() => (count.value = props.coinDetails.count));
 

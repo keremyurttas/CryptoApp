@@ -39,6 +39,7 @@
 <script setup>
 import { defineProps, ref, watchEffect } from "vue";
 import store from "@/store";
+import swal from "sweetalert";
 let props = defineProps({
   coinDetails: {
     type: Object,
@@ -58,7 +59,22 @@ let count = ref(0);
 
 watchEffect(() => (count.value = props.coinDetails.count));
 function removeCoinFnc() {
-  store.commit("removeCoin", props.coinDetails.id);
+  swal({
+    title: "Are you sure?",
+    text: `You are removing ${props.coinDetails.name} from inventory.`,
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  }).then((willDelete) => {
+    if (willDelete) {
+      store.commit("removeCoin", props.coinDetails.id);
+      swal(`Poof! Your ${props.coinDetails.name} has been removed!`, {
+        icon: "success",
+      });
+    } else {
+      swal("Your Crypto is safe!");
+    }
+  });
 }
 
 function updateCoinFnc() {

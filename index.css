@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 .custom-button {
   @apply md:px-4 md:py-2 rounded-md flex items-center justify-center;
 }

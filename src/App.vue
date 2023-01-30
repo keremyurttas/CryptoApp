@@ -1,5 +1,6 @@
 <template>
   <div class="h-screen w-screen container mx-auto py-4 md:py-20">
+    <loader-component v-if="store.state.isLoading"></loader-component>
     <popup-component
       @popup-close="popupClose($event)"
       v-if="popupDisplay"
@@ -59,6 +60,7 @@ import ownedCoin from "./components/OwnedCoin.vue";
 import ownedCoinSkeleton from "./components/OwnedCoinSkeleton.vue";
 import chartSkeletonComponent from "./components/ChartSkeletonComponent.vue";
 import store from "./store";
+import loaderComponent from "./loaders/LoaderComponent.vue";
 
 let popupDisplay = ref(false);
 
@@ -69,6 +71,7 @@ function fetchData() {
   store.dispatch("fetchData");
 }
 const getInventory = computed(() => {
+  console.log(store.state.isLoading);
   return store.getters.getInventory;
 });
 const getChartDetails = computed(() => {

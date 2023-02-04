@@ -39,7 +39,7 @@
   </div>
 </template>
 <script setup>
-import coinComponent from "./CoinComponent.vue";
+import coinComponent from "./CryptoCoin.vue";
 import ownedCoin from "./OwnedCoin.vue";
 import store from "@/store";
 import { computed, ref } from "vue";

@@ -25,7 +25,7 @@
   </div>
 </template>
 <script setup>
-import { defineProps, ref, watchEffect } from "vue";
+import { defineProps, ref } from "vue";
 import store from "@/store";
 let props = defineProps({
   coinDetails: {
@@ -46,15 +46,17 @@ let props = defineProps({
   },
 });
 
-let count = ref();
-
-watchEffect(() => (count.value = props.coinDetails.count));
+let count = ref(1);
 
 function addToInventoryFnc() {
-  if (count.value != (0 || undefined))
+  const detailProp = props.coinDetails;
+  if (count.value != 0)
     store.commit("addToInventory", {
-      id: props.coinDetails.id,
+      id: detailProp.id,
+      name: detailProp.name,
       count: count.value,
+      price: detailProp.price,
+      avgPrice: detailProp.avgPrice,
     });
 }
 </script>

@@ -25,10 +25,14 @@
             name: coin.symbol,
             price: coin.lastPrice,
             avgPrice: coin.weightedAvgPrice,
-            id: coin.firstId,
+            id: coin.lastId,
             count: coin.ownedCount,
           }"
-          :is="componentGetter(coin.uCoin)"
+          :is="
+            coin.uCoin == undefined || coin.uCoin == false
+              ? coinComponent
+              : ownedCoin
+          "
         ></component>
 
         <!-- <owned-crypto></owned-crypto>
@@ -46,18 +50,9 @@ import { computed, ref } from "vue";
 
 let inputVal = ref("");
 
-function componentGetter(uCoin) {
-  if (uCoin == undefined || uCoin == false) return coinComponent;
-  else return ownedCoin;
-}
-
 const filterBySearch = computed(() => {
-  let searchResult = [];
-  store.getters.getAllCoins.forEach((coin) => {
-    if (coin.symbol.includes(inputVal.value.toUpperCase())) {
-      searchResult.push(coin);
-    }
-  });
-  return searchResult.slice(0, 50);
+  return store.getters.getAllCoins.filter((coin) =>
+    coin.symbol.toLocaleLowerCase().includes(inputVal.value.toLocaleLowerCase())
+  );
 });
 </script>

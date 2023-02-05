@@ -9,44 +9,31 @@ export default createStore({
     isLoading: false,
   },
   getters: {
-    getInventory(state) {
-      let detailedInventory = [];
-
-      state.inventory.forEach((coin) => {
-        for (let i = 0; i < state.allCoins.length; i++) {
-          if (coin.id === state.allCoins[i].firstId) {
-            detailedInventory.push({
-              name: state.allCoins[i].symbol,
-              price: state.allCoins[i].lastPrice,
-              avgPrice: state.allCoins[i].weightedAvgPrice,
-              id: state.allCoins[i].firstId,
-              count: coin.count,
-            });
-            break;
-          }
-        }
-      });
-
-      return detailedInventory;
-    },
     getAllCoins(state) {
-      let coins = [];
-
-      if (state.inventory.length == 0) {
-        coins = state.allCoins;
-      } else
-        state.inventory.forEach((ownedCoin) => {
-          state.allCoins.forEach((coin) => {
-            if (ownedCoin.id == coin.firstId) {
-              coin.uCoin = true;
-              coin.ownedCount = ownedCoin.count;
-            }
-            coins.push(coin);
-          });
-        });
-
-      return coins;
+      state.allCoins = state.data.map((data) => ({
+        ...data,
+        ownedCount: state.inventory.find(
+          (ownedCoin) => ownedCoin.name == data.symbol
+        )
+          ? state.inventory.find((ownedCoin) => ownedCoin.name == data.symbol)
+              .count
+          : 1,
+        uCoin: Boolean(
+          state.inventory.find((ownedCoin) => ownedCoin.name == data.symbol)
+        ),
+      }));
+      return state.allCoins;
     },
+    // getInventory(state) {
+    //   return state.inventory.map((ownedCoin) => ({
+    //     ...ownedCoin,
+    //     price: state.allCoins.find((coin) => coin.symbol == ownedCoin.name)
+    //       .lastPrice,
+
+    //     avgPrice: state.allCoins.find((coin) => coin.symbol == ownedCoin.name)
+    //       .weightedAvgPrice,
+    //   }));
+    // },
   },
   mutations: {
     addToInventory(state, payload) {
@@ -57,11 +44,6 @@ export default createStore({
         (coin) => coin.id == payload
       );
       state.inventory.splice(inventoryIndex, 1);
-      let allCoinsIndex = state.allCoins.findIndex(
-        (coin) => coin.firstId == payload
-      );
-      state.allCoins[allCoinsIndex].uCoin = false;
-      state.allCoins[allCoinsIndex].ownedCount = undefined;
       state.isLoading = false;
     },
     updateCoin(state, payload) {
@@ -69,28 +51,33 @@ export default createStore({
       state.inventory[index].count = payload.count;
       state.isLoading = false;
     },
+    updateInventory(state) {
+      // console.log("work");
+      // state.inventory.map((ownedCoin) => ({
+      //   ...ownedCoin,
+      //   price: state.data.find((coin) => coin.symbol == ownedCoin.name)
+      //     .lastPrice,
+      //   avgPrice: state.data.find((coin) => coin.symbol == ownedCoin.name)
+      //     .weightedAvgPrice,
+      // }));
+      state.inventory.forEach((ownedCoin) => {
+        let active = state.data.find((coin) => coin.symbol == ownedCoin.name);
+        console.log(active);
+        ownedCoin.price = active.lastPrice;
+        ownedCoin.avgPrice = active.weightedAvgPrice;
+      });
+    },
   },
   actions: {
-    fetchData({ state }) {
+    async fetchData({ state }) {
       state.isLoading = true;
-      axios.get("https://api2.binance.com/api/v3/ticker/24hr").then((r) => {
-        // let data = [];
-        r.data.forEach((d, index) => {
-          // if (d.firstId != -1) {
-          //   data.push(d);
-          // }
-          if (d.openPrice == 0 && d.firstId == -1 && d.lastId == -1) {
-            r.data.splice(index, 1);
-          }
+      await axios
+        .get("https://api2.binance.com/api/v3/ticker/24hr")
+        .then((response) => {
+          state.data = response.data.filter((coin) => coin.firstId != -1);
         });
-        if (state.allCoins.length === r.data.length) {
-          for (let i = 0; i < state.allCoins.length; i++) {
-            state.allCoins[i].lastPrice = r.data[i].lastPrice;
-          }
-        } else state.allCoins = r.data;
-
-        state.isLoading = false;
-      });
+      this.commit("updateInventory");
+      state.isLoading = false;
     },
   },
   modules: {},

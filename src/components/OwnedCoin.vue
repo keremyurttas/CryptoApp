@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-4 border flex rounded-lg justify-between w-full items-center relative"
+    class="p-4 border flex rounded-lg w-full items-center relative justify-between"
   >
     <span v-if="inInventory"
       >{{ coinDetails.name }} <br />

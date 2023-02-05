@@ -1,11 +1,15 @@
 <template>
-  <Pie
-    :data="{
-      labels: chartDetails.names,
-      datasets: [{ backgroundColor: backgroundColor, data: chartDetails.data }],
-    }"
-    :options="options"
-  ></Pie>
+  <div class="">
+    <Pie
+      :data="{
+        labels: chartDetails.names,
+        datasets: [
+          { backgroundColor: backgroundColor, data: chartDetails.data },
+        ],
+      }"
+      :options="options"
+    ></Pie>
+  </div>
 </template>
 <script setup>
 import { Pie } from "vue-chartjs";

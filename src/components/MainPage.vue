@@ -10,7 +10,11 @@
     ></crypto-popup>
 
     <div class="flex gap-4 w-full border-gray-500 border-b-2 py-4 text-white">
-      <button @click="popupDisplay = true" class="custom-button bg-blue-600">
+      <button
+        @click="popupDisplay = true"
+        class="custom-button bg-blue-600"
+        :class="{ 'animate-pulse': store.state.inventory.length == 0 }"
+      >
         Add / Update
       </button>
       <button @click="fetchData" class="custom-button bg-blue-600">

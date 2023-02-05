@@ -52,20 +52,13 @@ export default createStore({
       state.isLoading = false;
     },
     updateInventory(state) {
-      // console.log("work");
-      // state.inventory.map((ownedCoin) => ({
-      //   ...ownedCoin,
-      //   price: state.data.find((coin) => coin.symbol == ownedCoin.name)
-      //     .lastPrice,
-      //   avgPrice: state.data.find((coin) => coin.symbol == ownedCoin.name)
-      //     .weightedAvgPrice,
-      // }));
-      state.inventory.forEach((ownedCoin) => {
-        let active = state.data.find((coin) => coin.symbol == ownedCoin.name);
-        console.log(active);
-        ownedCoin.price = active.lastPrice;
-        ownedCoin.avgPrice = active.weightedAvgPrice;
-      });
+      state.inventory = state.inventory.map((ownedCoin) => ({
+        ...ownedCoin,
+        price: state.data.find((coin) => coin.symbol == ownedCoin.name)
+          .lastPrice,
+        avgPrice: state.data.find((coin) => coin.symbol == ownedCoin.name)
+          .weightedAvgPrice,
+      }));
     },
   },
   actions: {

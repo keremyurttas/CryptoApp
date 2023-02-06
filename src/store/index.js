@@ -24,16 +24,19 @@ export default createStore({
       }));
       return state.allCoins;
     },
-    // getInventory(state) {
-    //   return state.inventory.map((ownedCoin) => ({
-    //     ...ownedCoin,
-    //     price: state.allCoins.find((coin) => coin.symbol == ownedCoin.name)
-    //       .lastPrice,
+    getChartDetails(state) {
+      let chartDetails = {
+        names: [],
+        data: [],
+      };
+      state.inventory.forEach((coin) => {
+        chartDetails.names.push(coin.name);
+        chartDetails.data.push(coin.price * coin.count);
+      });
+      console.log(chartDetails);
 
-    //     avgPrice: state.allCoins.find((coin) => coin.symbol == ownedCoin.name)
-    //       .weightedAvgPrice,
-    //   }));
-    // },
+      return chartDetails;
+    },
   },
   mutations: {
     addToInventory(state, payload) {

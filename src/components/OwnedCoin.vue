@@ -55,7 +55,7 @@ let props = defineProps({
   },
   inInventory: { type: Boolean, default: false },
 });
-let count = ref(0);
+let count = ref(1);
 
 watchEffect(() => (count.value = props.coinDetails.count));
 function removeCoinFnc() {

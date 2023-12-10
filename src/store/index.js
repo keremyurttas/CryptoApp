@@ -67,11 +67,17 @@ export default createStore({
   actions: {
     async fetchData({ state }) {
       state.isLoading = true;
-      await axios
-        .get("https://api2.binance.com/api/v3/ticker/24hr")
-        .then((response) => {
-          state.data = response.data.filter((coin) => coin.firstId != -1);
-        });
+      try {
+        const response = await axios.get(
+          "https://api2.binance.com/api/v3/ticker/24hr"
+        );
+        state.data = response.data
+          .filter((coin) => coin.firstId !== -1)
+          .slice();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle the error appropriately
+      }
       this.commit("updateInventory");
       state.isLoading = false;
     },

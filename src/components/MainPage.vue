@@ -1,8 +1,8 @@
 <template>
   <div class="h-screen w-screen container mx-auto py-4 md:py-20">
-    <!-- <Teleport to="#loader">
+    <Teleport to="#loader">
       <crypto-loader v-if="store.state.isLoading"></crypto-loader>
-    </Teleport> -->
+    </Teleport>
 
     <crypto-popup
       @popup-close="popupClose($event)"
@@ -35,7 +35,7 @@ import CryptoPopup from "./CryptoPopup.vue";
 import ChartSide from "./ChartSide.vue";
 import store from "../store";
 import InventorySide from "./InventorySide.vue";
-// import CryptoLoader from "@/loaders/CryptoLoader.vue";
+import CryptoLoader from "@/loaders/CryptoLoader.vue";
 let popupDisplay = ref(false);
 
 function popupClose(val) {

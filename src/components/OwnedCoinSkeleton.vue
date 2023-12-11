@@ -10,7 +10,7 @@
       <div class="bg-gray-300 w-24 h-3 inline-block"></div>
     </span>
 
-    <div class="flex gap-12 items-center justify-between">
+    <div class="flex md:gap-12 gap-6 items-center justify-between">
       <div class="w-16 h-8 bg-gray-300 rounded-md"></div>
       <div class="gap-4 flex">
         <div class="custom-button bg-gray-300 text-gray-300">Remove</div>

@@ -7,7 +7,7 @@
       {{ coinDetails.price }}-{{ coinDetails.avgPrice }}
     </span>
     <span v-else> {{ coinDetails.name }}-{{ coinDetails.price }}</span>
-    <div class="flex gap-12 items-center justify-between">
+    <div class="flex lg:gap-12 gap-4 items-center justify-between">
       <input
         class="rounded-md w-16 border-2 px-4 border-black relative h-8"
         type="number"

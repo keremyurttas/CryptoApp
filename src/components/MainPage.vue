@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-screen container mx-auto py-4 md:py-20">
+  <div class="h-screen w-screen container md:mx-auto py-4 md:py-20 px-4">
     <Teleport to="#loader">
       <crypto-loader v-if="store.state.isLoading"></crypto-loader>
     </Teleport>
